@@ -41,7 +41,7 @@ fun MovieRow(
     movie: Movie = getMovies()[0],
     modifier: Modifier = Modifier,
     onItemClick: (String) -> Unit = {},
-    onFavoriteClick: (String) -> Unit = {} // Add this parameter
+    onFavoriteClick: (String) -> Unit = {} // Updated parameter type to take a String parameter
 ) {
     Card(
         modifier = modifier
@@ -61,7 +61,12 @@ fun MovieRow(
                 contentAlignment = Alignment.Center
             ) {
                 MovieImage(imageUrl = movie.images[0])
-                FavoriteIcon(onFavoriteClick = { onFavoriteClick(movie.id) }) // Pass the lambda to handle the click event
+                FavoriteIcon(
+                    isFavorite = movie.isFavorite,
+                    onFavoriteClick = { // Pass the movie ID as a parameter to the lambda function
+                        onFavoriteClick(movie.id)
+                    }
+                )
             }
 
             MovieDetails(modifier = Modifier.padding(12.dp), movie = movie)
@@ -90,7 +95,7 @@ fun MovieImage(imageUrl: String) {
 @Composable
 fun FavoriteIcon(
     isFavorite: Boolean = false, // Add this parameter
-    onFavoriteClick: () -> Unit = {} // Add this parameter
+    onFavoriteClick: () -> Unit // Add this parameter
 ) {
     Box(
         modifier = Modifier

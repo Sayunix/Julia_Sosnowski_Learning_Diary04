@@ -13,22 +13,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SimpleTopAppBar(arrowBackClicked: () -> Unit = {}, content: @Composable () -> Unit){
+fun SimpleTopAppBar(arrowBackClicked: () -> Unit = {}, content: @Composable () -> Unit) {
     TopAppBar(elevation = 3.dp) {
         Row {
-            Icon(imageVector = Icons.Default.ArrowBack,
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Arrow back",
                 modifier = Modifier.clickable {
                     arrowBackClicked()
                 }
             )
-
             Spacer(modifier = Modifier.width(20.dp))
-
             content()
         }
     }
 }
+
+
+
 
 @Composable
 fun HomeTopAppBar(

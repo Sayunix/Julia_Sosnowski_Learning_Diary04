@@ -12,9 +12,10 @@ data class Movie(
     val plot: String,
     val images: List<String>,
     val rating: Float = 0f,
+    var isFavorite: Boolean = false
 )
 {
-    val favorite = mutableStateOf(false)
+    var favorite = mutableStateOf(isFavorite)
 }
 
 fun getMovies(): List<Movie> {

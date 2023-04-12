@@ -208,7 +208,7 @@ fun MainContent(modifier: Modifier = Modifier, viewModel: MovieViewModel, navCon
                         plot = plot,
                         images = emptyList(),
                         rating = rating.toFloatOrNull() ?: 0f,
-                        isFavorite = false
+
                     )
 
                     viewModel.addMovie(newMovie)

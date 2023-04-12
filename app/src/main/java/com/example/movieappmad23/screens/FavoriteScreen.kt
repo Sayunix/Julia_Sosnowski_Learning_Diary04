@@ -15,14 +15,17 @@ import com.example.movieappmad23.models.getMovies
 import com.example.movieappmad23.widgets.MovieRow
 import com.example.movieappmad23.widgets.SimpleTopAppBar
 
+
 @Composable
 fun FavoriteScreen(navController: NavController, viewModel: MovieViewModel) {
-
-    Scaffold(topBar = {
-        SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
-            Text(text = "My Favorite Movies")
+    Scaffold(
+        topBar = {
+            SimpleTopAppBar(
+                arrowBackClicked = { navController.popBackStack() },
+                content = { Text(text = "My Favorite Movies") }
+            )
         }
-    }) { padding ->
+    ) { padding ->
         // Use viewModel.favoriteMovies instead of getMovies()
         val movieList: List<Movie> = viewModel.favoriteMovies
 
@@ -43,3 +46,4 @@ fun FavoriteScreen(navController: NavController, viewModel: MovieViewModel) {
         }
     }
 }
+
