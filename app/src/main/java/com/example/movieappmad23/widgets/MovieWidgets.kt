@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -39,31 +40,35 @@ import com.example.movieappmad23.ui.theme.Shapes
 fun MovieRow(
     movie: Movie = getMovies()[0],
     modifier: Modifier = Modifier,
-    onItemClick: (String) -> Unit = {}
+    onItemClick: (String) -> Unit = {},
+    onFavoriteClick: (String) -> Unit = {} // Add this parameter
 ) {
-    Card(modifier = modifier
-        .clickable {
-            onItemClick(movie.id)
-        }
-        .fillMaxWidth()
-        .padding(5.dp),
+    Card(
+        modifier = modifier
+            .clickable {
+                onItemClick(movie.id)
+            }
+            .fillMaxWidth()
+            .padding(5.dp),
         shape = Shapes.large,
         elevation = 10.dp
     ) {
         Column {
-            Box(modifier = Modifier
-                .height(150.dp)
-                .fillMaxWidth(),
+            Box(
+                modifier = Modifier
+                    .height(150.dp)
+                    .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 MovieImage(imageUrl = movie.images[0])
-                FavoriteIcon()
+                FavoriteIcon(onFavoriteClick = { onFavoriteClick(movie.id) }) // Pass the lambda to handle the click event
             }
 
             MovieDetails(modifier = Modifier.padding(12.dp), movie = movie)
         }
     }
 }
+
 
 @Composable
 fun MovieImage(imageUrl: String) {
@@ -83,18 +88,26 @@ fun MovieImage(imageUrl: String) {
 }
 
 @Composable
-fun FavoriteIcon() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(10.dp),
+fun FavoriteIcon(
+    isFavorite: Boolean = false, // Add this parameter
+    onFavoriteClick: () -> Unit = {} // Add this parameter
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp),
         contentAlignment = Alignment.TopEnd
-    ){
-        Icon(
-            tint = MaterialTheme.colors.secondary,
-            imageVector = Icons.Default.FavoriteBorder,
-            contentDescription = "Add to favorites")
+    ) {
+        IconButton(onClick = onFavoriteClick) {
+            Icon(
+                tint = MaterialTheme.colors.secondary,
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Add to favorites"
+            )
+        }
     }
 }
+
 
 
 @Composable

@@ -1,27 +1,23 @@
 package com.example.movieappmad23
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.example.movieappmad23.models.Movie
 import com.example.movieappmad23.models.getMovies
 
-class MovieViewModel : ViewModel() {
+class MoviesViewModel : ViewModel() {
+    private val _movies = mutableStateOf(movies)
+    val movies: List<Movie> get() = _movies.value
 
-    private val _allMovies: SnapshotStateList<Movie> = mutableStateListOf()
-    val allMovies: List<Movie> get() = _allMovies
-
-    init {
-        // Load movies into the ViewModel. Replace this with your movie loading method.
-        _allMovies.addAll(getMovies())
+    fun toggleFavorite(id: String) {
+        _movies.value.find { it.id == id }?.let { movie ->
+            movie.favorite.value = !movie.favorite.value
+        }
     }
 
-    fun toggleFavorite(movieId: String) {
-        val movie = _allMovies.find { it.id == movieId }
-        movie?.isFavorite = movie?.isFavorite?.not() ?: false
+    fun getFavorites(): List<Movie> {
+        return _movies.value.filter { it.favorite.value }
     }
-
-    val favoriteMovies: List<Movie>
-        get() = _allMovies.filter { it.isFavorite }
-
 }

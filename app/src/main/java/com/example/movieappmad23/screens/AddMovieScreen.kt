@@ -15,13 +15,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.movieappmad23.MovieViewModel
 import com.example.movieappmad23.R
 import com.example.movieappmad23.models.Genre
 import com.example.movieappmad23.models.ListItemSelectable
+import com.example.movieappmad23.models.Movie
 import com.example.movieappmad23.widgets.SimpleTopAppBar
+import java.util.UUID
 
 @Composable
-fun AddMovieScreen(navController: NavController){
+fun AddMovieScreen(navController: NavController, viewModel: MovieViewModel) {
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -32,13 +35,13 @@ fun AddMovieScreen(navController: NavController){
             }
         },
     ) { padding ->
-        MainContent(Modifier.padding(padding))
+        MainContent(modifier = Modifier.padding(padding), viewModel = viewModel, navController = navController)
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainContent(modifier: Modifier = Modifier) {
+fun MainContent(modifier: Modifier = Modifier, viewModel: MovieViewModel, navController: NavController) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -190,9 +193,31 @@ fun MainContent(modifier: Modifier = Modifier) {
 
             Button(
                 enabled = isEnabledSaveButton,
-                onClick = { /*TODO add a new movie to the movie list*/ }) {
+                onClick = {
+                    val selectedGenres = genreItems.filter { it.isSelected }.map {
+                        Genre.valueOf(it.title)
+                    }
+
+                    val newMovie = Movie(
+                        id = UUID.randomUUID().toString(),
+                        title = title,
+                        year = year,
+                        genre = selectedGenres,
+                        director = director,
+                        actors = actors,
+                        plot = plot,
+                        images = emptyList(),
+                        rating = rating.toFloatOrNull() ?: 0f,
+                        isFavorite = false
+                    )
+
+                    viewModel.addMovie(newMovie)
+                    navController.popBackStack()
+                }
+            ) {
                 Text(text = stringResource(R.string.add))
             }
+
         }
     }
 }

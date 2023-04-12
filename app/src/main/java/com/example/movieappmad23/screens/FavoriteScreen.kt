@@ -9,27 +9,33 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.movieappmad23.MovieViewModel
 import com.example.movieappmad23.models.Movie
 import com.example.movieappmad23.models.getMovies
 import com.example.movieappmad23.widgets.MovieRow
 import com.example.movieappmad23.widgets.SimpleTopAppBar
 
 @Composable
-fun FavoriteScreen(navController: NavController){
+fun FavoriteScreen(navController: NavController, viewModel: MovieViewModel) {
+
     Scaffold(topBar = {
         SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
             Text(text = "My Favorite Movies")
         }
-    }){ padding ->
-        val movieList: List<Movie> = getMovies()
+    }) { padding ->
+        // Use viewModel.favoriteMovies instead of getMovies()
+        val movieList: List<Movie> = viewModel.favoriteMovies
 
         Column(modifier = Modifier.padding(padding)) {
             LazyColumn {
-                items(movieList){ movie ->
+                items(movieList) { movie ->
                     MovieRow(
                         movie = movie,
                         onItemClick = { movieId ->
                             navController.navigate(route = Screen.DetailScreen.withId(movieId))
+                        },
+                        onFavoriteClick = { movieId ->
+                            viewModel.toggleFavorite(movieId)
                         }
                     )
                 }

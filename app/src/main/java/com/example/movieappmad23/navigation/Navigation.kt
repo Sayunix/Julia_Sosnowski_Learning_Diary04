@@ -7,21 +7,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.movieappmad23.screens.*
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movieappmad23.MovieViewModel
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+    val movieViewModel = viewModel<MovieViewModel>()
+
     NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
-        composable(route = Screen.MainScreen.route){
-            HomeScreen(navController = navController)
+        composable(route = Screen.MainScreen.route) {
+            HomeScreen(navController = navController, viewModel = movieViewModel)
         }
 
         composable(Screen.FavoriteScreen.route) {
-            FavoriteScreen(navController = navController)
+            FavoriteScreen(navController = navController, viewModel = movieViewModel)
         }
-
         composable(Screen.AddMovieScreen.route) {
-            AddMovieScreen(navController = navController)
+            AddMovieScreen(navController = navController, viewModel = movieViewModel)
         }
 
         // build a route like: root/detail-screen/id=34
